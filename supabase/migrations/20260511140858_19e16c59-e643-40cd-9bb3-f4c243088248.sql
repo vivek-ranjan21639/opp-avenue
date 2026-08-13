@@ -1,0 +1,1 @@
+ALTER TABLE public.r_resources ADD COLUMN IF NOT EXISTS video_url text, ADD COLUMN IF NOT EXISTS thumbnail_url text;

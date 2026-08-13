@@ -1,0 +1,815 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Opp Avenue Design System - Peach theme with professional accents */
+
+@layer base {
+  :root {
+    /* Main background - pure white */
+    --background: 0 0% 100%;
+    --background-secondary: 0 0% 100%;
+    --foreground: 210 25% 15%;
+
+    /* Card system - white with subtle blue border */
+    --card: 0 0% 100%;
+    --card-foreground: 210 25% 15%;
+    --card-border: 210 30% 90%;
+
+    /* Popovers */
+    --popover: 30 25% 98%;
+    --popover-foreground: 210 25% 15%;
+
+    /* Primary - Professional Blue */
+    --primary: 210 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 210 100% 40%;
+
+    /* Secondary - Light blue tints */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 210 80% 25%;
+    --secondary-hover: 210 40% 92%;
+
+    /* Accent - Vibrant Orange (kept for advertise button) */
+    --accent: 35 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 35 100% 50%;
+
+    /* Muted tones - light blue-gray */
+    --muted: 210 30% 96%;
+    --muted-foreground: 210 15% 45%;
+
+    /* Status colors */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 120 50% 45%;
+    --success-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 210 25% 90%;
+    --input: 0 0% 100%;
+    --input-border: 210 30% 80%;
+    --ring: 210 100% 45%;
+
+    /* Radius */
+    --radius: 0.75rem;
+
+    /* Custom gradients */
+    --gradient-main: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 100%));
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 45%), hsl(210 100% 40%));
+    --gradient-accent: linear-gradient(135deg, hsl(35 100% 55%), hsl(35 100% 50%));
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Floating bubbles animation */
+  .floating-bubbles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, 
+      hsl(36 40% 85% / 0.6), 
+      hsl(36 35% 88% / 0.4)
+    );
+    box-shadow: 0 4px 20px hsl(36 35% 80% / 0.3);
+    animation: float-up 8s infinite linear;
+  }
+
+  .bubble:nth-child(odd) {
+    animation-duration: 10s;
+    background: linear-gradient(135deg, 
+      hsl(36 35% 88% / 0.5), 
+      hsl(36 30% 90% / 0.3)
+    );
+    box-shadow: 0 4px 15px hsl(36 30% 82% / 0.25);
+  }
+
+  .bubble:nth-child(3n) {
+    animation-duration: 12s;
+    background: linear-gradient(135deg, 
+      hsl(36 30% 90% / 0.45), 
+      hsl(36 25% 92% / 0.25)
+    );
+    box-shadow: 0 3px 12px hsl(36 25% 85% / 0.2);
+  }
+
+  .bubble:nth-child(5n) {
+    animation-duration: 14s;
+    background: linear-gradient(135deg, 
+      hsl(36 25% 87% / 0.4), 
+      hsl(36 20% 89% / 0.25)
+    );
+    box-shadow: 0 5px 18px hsl(36 20% 83% / 0.2);
+  }
+
+  @keyframes float-up {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Circular menu button */
+  .circular-menu {
+    @apply relative w-20 h-20 rounded-full flex items-center justify-center;
+    @apply bg-muted/60 hover:bg-muted;
+    @apply text-muted-foreground hover:text-foreground font-medium text-sm;
+    @apply border border-border/50 hover:border-border;
+    @apply shadow-sm hover:shadow-md transition-all duration-300;
+    @apply hover:scale-105;
+    cursor: pointer;
+  }
+
+  /* Advertise button animation */
+  .advertise-pulse {
+    animation: advertise-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes advertise-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px hsl(var(--accent) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(var(--accent) / 0.6), 0 0 30px hsl(var(--accent) / 0.4);
+      transform: scale(1.05);
+    }
+  }
+
+  /* Job card animations */
+  .job-card {
+    @apply bg-card border border-card-border rounded-xl p-4;
+    @apply shadow-card transition-all duration-300;
+    @apply hover:-translate-y-1 hover:scale-[1.01];
+    @apply w-full;
+    @apply outline-none ring-0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .job-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, hsl(210 100% 50%), hsl(220 90% 55%));
+  }
+
+  .job-card:hover,
+  .job-card:focus,
+  .job-card:focus-visible {
+    box-shadow: 0 8px 35px hsl(210 100% 45% / 0.25), 0 4px 20px hsl(210 100% 50% / 0.15);
+    border-color: hsl(210 100% 60%);
+    outline: none;
+    ring: 0;
+  }
+
+  /* Featured job card — blue fill with white text for visibility */
+  .featured-job-card .job-card {
+    background: linear-gradient(135deg, hsl(215 90% 50%), hsl(220 85% 42%));
+    border-color: hsl(220 85% 38%);
+    color: hsl(0 0% 100%);
+  }
+  .featured-job-card .job-card * {
+    color: inherit !important;
+  }
+  .featured-job-card .job-card .text-muted-foreground,
+  .featured-job-card .job-card .text-card-foreground {
+    color: hsl(0 0% 100% / 0.92) !important;
+  }
+  /* Badges: translucent white pill on blue */
+  .featured-job-card .job-card [class*="bg-secondary"],
+  .featured-job-card .job-card [class*="bg-background"] {
+    background-color: hsl(0 0% 100% / 0.18) !important;
+    border-color: hsl(0 0% 100% / 0.35) !important;
+  }
+  .featured-job-card .job-card svg {
+    color: hsl(0 0% 100% / 0.9) !important;
+  }
+  .featured-job-card .job-card:hover,
+  .featured-job-card .job-card:focus {
+    box-shadow: 0 8px 35px hsl(220 85% 35% / 0.45), 0 4px 20px hsl(215 90% 50% / 0.3);
+    border-color: hsl(215 90% 60%);
+  }
+
+  /* Social sidebar styling */
+  .social-sidebar {
+    @apply fixed left-0 top-0 h-full w-16 bg-background/95 backdrop-blur-sm;
+    @apply shadow-none z-40;
+    @apply flex flex-col items-center justify-center gap-4;
+  }
+
+  .social-icon {
+    @apply w-10 h-10 rounded-lg bg-primary/10 hover:bg-primary;
+    @apply flex items-center justify-center text-primary hover:text-primary-foreground;
+    @apply transition-all duration-300 hover:scale-110;
+  }
+
+  /* Sticky header */
+  .sticky-header {
+    @apply sticky top-0 z-30 bg-background/95 backdrop-blur-md;
+    @apply shadow-none;
+  }
+
+  /* Subtle pulse animation for social handles */
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.95;
+      transform: scale(1.02);
+    }
+  }
+}
+
+/* ===== Match frontend rendered content spacing exactly to TipTap editor =====
+   Tailwind Typography (`prose`) injects defaults via `:where()` (zero specificity),
+   so any explicit selector overrides them. We mirror the editor's rhythm here. */
+.prose p,
+.blog-content p,
+.resource-content p {
+  margin: 1em 0;
+  min-height: 1em;
+}
+
+/* Preserve empty paragraphs (used as spacers in the editor) */
+.prose p:empty::before,
+.blog-content p:empty::before,
+.resource-content p:empty::before {
+  content: "\00a0";
+  display: inline-block;
+}
+
+.prose h1, .blog-content h1, .resource-content h1 {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.67em 0;
+}
+.prose h2, .blog-content h2, .resource-content h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0.83em 0;
+}
+.prose h3, .blog-content h3, .resource-content h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1em 0;
+}
+.prose h4, .blog-content h4, .resource-content h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 1em 0;
+}
+
+.prose ul, .blog-content ul, .resource-content ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+.prose ol, .blog-content ol, .resource-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+.prose ul li, .prose ol li,
+.blog-content ul li, .blog-content ol li,
+.resource-content ul li, .resource-content ol li {
+  margin: 0.25em 0;
+}
+.prose ul li p, .prose ol li p,
+.blog-content ul li p, .blog-content ol li p,
+.resource-content ul li p, .resource-content ol li p {
+  margin: 0;
+}
+
+.prose blockquote, .blog-content blockquote, .resource-content blockquote {
+  border-left: 3px solid hsl(var(--border));
+  padding-left: 1em;
+  margin: 1em 0;
+  color: hsl(var(--muted-foreground));
+  font-style: normal;
+}
+
+.prose pre, .blog-content pre, .resource-content pre {
+  background: hsl(var(--muted));
+  padding: 0.75em 1em;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.prose hr, .blog-content hr, .resource-content hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1.5em 0;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.prose iframe {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border: none;
+}
+
+.prose video {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.prose audio {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.prose figure {
+  margin: 1.5rem 0;
+}
+
+.prose figure figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.5rem;
+}
+
+.prose a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.prose a:hover {
+  color: hsl(var(--primary-hover));
+}
+
+/* TipTap editor word-wrap to prevent overflow */
+.tiptap-editor .ProseMirror {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.tiptap-editor .ProseMirror p,
+.tiptap-editor .ProseMirror h1,
+.tiptap-editor .ProseMirror h2,
+.tiptap-editor .ProseMirror h3,
+.tiptap-editor .ProseMirror h4,
+.tiptap-editor .ProseMirror li,
+.tiptap-editor .ProseMirror a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* TipTap editor styles - ensure headings, lists, images render properly */
+.tiptap-editor .ProseMirror h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0.67em 0;
+  line-height: 1.2;
+}
+
+.tiptap-editor .ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.83em 0;
+  line-height: 1.3;
+}
+
+.tiptap-editor .ProseMirror h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 1em 0;
+  line-height: 1.4;
+}
+
+.tiptap-editor .ProseMirror h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 1em 0;
+}
+
+.tiptap-editor .ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.tiptap-editor .ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.tiptap-editor .ProseMirror ul li,
+.tiptap-editor .ProseMirror ol li {
+  margin: 0.25em 0;
+}
+
+.tiptap-editor .ProseMirror ul li p,
+.tiptap-editor .ProseMirror ol li p {
+  margin: 0;
+}
+
+.tiptap-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap-editor .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid hsl(var(--primary));
+}
+
+.tiptap-editor .ProseMirror p[style*="text-align: center"] img,
+.tiptap-editor .ProseMirror [style*="text-align:center"] img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.tiptap-editor .ProseMirror [style*="text-align: right"] img {
+  margin-left: auto;
+  display: block;
+}
+
+.tiptap-editor .ProseMirror blockquote {
+  border-left: 3px solid hsl(var(--border));
+  padding-left: 1em;
+  margin: 1em 0;
+  color: hsl(var(--muted-foreground));
+}
+
+.tiptap-editor .ProseMirror pre {
+  background: hsl(var(--muted));
+  padding: 0.75em 1em;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.tiptap-editor .ProseMirror hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1.5em 0;
+}
+
+/* ===== Table styles for TipTap editor and rendered content ===== */
+
+/* Tables: fixed layout so column widths are respected & resizable.
+   Width: max-content lets tables exceed the editor width and the wrapper
+   below provides horizontal scroll without affecting siblings. */
+.tiptap-editor .ProseMirror table,
+.prose table,
+.blog-content table,
+.resource-content table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  table-layout: fixed;
+  width: max-content;
+  max-width: 100%;
+}
+
+/* TipTap wraps tables in div.tableWrapper — make it horizontally scrollable */
+.tiptap-editor .ProseMirror .tableWrapper,
+.prose .tableWrapper,
+.blog-content .tableWrapper,
+.resource-content .tableWrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1em 0;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Frontend rendered HTML: ensure tables scroll on their own block */
+.blog-content table,
+.resource-content table,
+.prose table {
+  display: block;
+  overflow-x: auto;
+  white-space: normal;
+}
+
+.tiptap-editor .ProseMirror table td,
+.tiptap-editor .ProseMirror table th,
+.prose table td,
+.prose table th,
+.blog-content table td,
+.blog-content table th,
+.resource-content table td,
+.resource-content table th {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5em 0.75em;
+  vertical-align: top;
+  position: relative;
+  min-width: 80px;
+  box-sizing: border-box;
+}
+
+.tiptap-editor .ProseMirror table th,
+.prose table th,
+.blog-content table th,
+.resource-content table th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+  text-align: left;
+}
+
+.tiptap-editor .ProseMirror table td > *,
+.tiptap-editor .ProseMirror table th > * {
+  margin: 0;
+}
+
+/* Selected-cell highlight when dragging across cells */
+.tiptap-editor .ProseMirror .selectedCell {
+  background: hsl(var(--primary) / 0.18) !important;
+  position: relative;
+}
+.tiptap-editor .ProseMirror .selectedCell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--primary) / 0.08);
+  pointer-events: none;
+}
+
+/* Floating image styles - drag-and-drop + word-wrap */
+.tiptap-editor .ProseMirror img {
+  cursor: grab;
+}
+
+.tiptap-editor .ProseMirror img:active {
+  cursor: grabbing;
+}
+
+.tiptap-editor .ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px hsl(var(--background)), 0 4px 20px hsl(var(--primary) / 0.3);
+}
+
+.tiptap-editor .ProseMirror img[data-float="left"],
+.prose img[data-float="left"],
+.blog-content img[data-float="left"],
+.resource-content img[data-float="left"] {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  clear: none;
+}
+
+.tiptap-editor .ProseMirror img[data-float="right"],
+.prose img[data-float="right"],
+.blog-content img[data-float="right"],
+.resource-content img[data-float="right"] {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  clear: none;
+}
+
+.tiptap-editor .ProseMirror img[data-float="center"],
+.prose img[data-float="center"],
+.blog-content img[data-float="center"],
+.resource-content img[data-float="center"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  float: none;
+  clear: both;
+}
+
+/* Auto-clear floats at end of containers so layout is predictable */
+.tiptap-editor .ProseMirror::after,
+.prose::after,
+.blog-content::after,
+.resource-content::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ===== Multi-column layout (Word-like) ===== */
+.tiptap-editor .ProseMirror .editor-columns,
+.editor-columns,
+.prose .editor-columns,
+.blog-content .editor-columns,
+.resource-content .editor-columns {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1em 0;
+  align-items: start;
+}
+
+.editor-columns-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.editor-columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.editor-columns-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.editor-columns-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.editor-columns-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+/* Editor view: dashed separators between columns for clarity */
+.tiptap-editor .ProseMirror .editor-columns {
+  padding: 0.5rem;
+  border: 1px dashed hsl(var(--border));
+  border-radius: 0.375rem;
+}
+
+.tiptap-editor .ProseMirror .editor-column {
+  min-height: 3em;
+  padding: 0.5rem;
+  border-right: 1px dashed hsl(var(--border) / 0.6);
+  outline: none;
+}
+.tiptap-editor .ProseMirror .editor-column:last-child {
+  border-right: none;
+}
+
+.editor-column {
+  min-height: 2em;
+  min-width: 0;
+}
+
+/* Frontend render: clean (no dashed borders/padding) */
+.prose .editor-columns,
+.blog-content .editor-columns,
+.resource-content .editor-columns {
+  border: none;
+  padding: 0;
+}
+.prose .editor-column,
+.blog-content .editor-column,
+.resource-content .editor-column {
+  border: none;
+  padding: 0;
+}
+
+/* Responsive collapse on small screens */
+@media (max-width: 640px) {
+  .editor-columns-2,
+  .editor-columns-3,
+  .editor-columns-4,
+  .editor-columns-5,
+  .editor-columns-6 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Table column resize handle */
+.tiptap-editor .ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: hsl(var(--primary));
+  cursor: col-resize;
+  z-index: 20;
+}
+
+.tiptap-editor .ProseMirror.resize-cursor {
+  cursor: col-resize;
+}
+
+/* Editor shapes */
+.editor-shape {
+  box-sizing: border-box;
+  min-height: 1.5rem;
+}
+.editor-shape p {
+  margin: 0;
+}
+.editor-shape.editor-shape-circle p {
+  margin: 0 auto;
+}
+/* Clear floats around shapes inside paragraphs */
+.tiptap-editor .ProseMirror::after,
+.prose .editor-shape + p::after {
+  content: '';
+  display: block;
+  clear: both;
+}

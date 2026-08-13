@@ -1,0 +1,19 @@
+# Opp Avenue
+
+> Opp Avenue is a career portal helping professionals discover jobs, read career blogs, and access curated resources across India and remote roles.
+
+## Pages
+
+- [Home](/): Browse and search latest job openings across roles, domains, and locations.
+- [Blogs](/blogs): Career advice, industry insights, and guidance articles.
+- [Resources](/resources): Curated career resources organized by category (guides, government reports, templates, etc.).
+- [About](/about): About Opp Avenue.
+- [Advertise](/advertise): Post a job or promote your brand.
+- [Contact](/contact): Get in touch.
+
+## Optional
+
+- [Privacy Policy](/privacy-policy)
+- [Terms & Conditions](/terms)
+- [Disclaimer](/disclaimer)
+- [Cookie Policy](/cookie-policy)

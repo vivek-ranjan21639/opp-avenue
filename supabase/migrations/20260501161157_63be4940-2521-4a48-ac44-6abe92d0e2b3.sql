@@ -1,0 +1,1 @@
+DELETE FROM public.j_sources WHERE source_type = 'scraper';
