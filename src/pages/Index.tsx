@@ -185,8 +185,6 @@ const Index = () => {
       entity_id: job.id,
       metadata: { title: job.title, company: job.company },
     });
-    // Always open in new tab for all screen sizes
-    window.open(`/job/${job.id}`, '_blank');
   };
 
   // Debounced search tracking — fires once user pauses typing

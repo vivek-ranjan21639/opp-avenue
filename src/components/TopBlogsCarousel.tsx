@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TopBlog } from '@/hooks/useTopBlogs';
 
 interface TopBlogsCarouselProps {
@@ -11,7 +11,6 @@ interface TopBlogsCarouselProps {
 }
 
 const TopBlogsCarousel: React.FC<TopBlogsCarouselProps> = ({ blogs, title = 'Top Articles' }) => {
-  const navigate = useNavigate();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const isPausedRef = React.useRef(false);
 
@@ -40,10 +39,6 @@ const TopBlogsCarousel: React.FC<TopBlogsCarouselProps> = ({ blogs, title = 'Top
     }, 3000);
     return () => clearInterval(id);
   }, [blogs]);
-
-  const handleBlogClick = (slug: string) => {
-    window.open(`/blog/${slug}`, '_blank');
-  };
 
   if (!blogs || blogs.length === 0) return null;
 
@@ -98,8 +93,14 @@ const TopBlogsCarousel: React.FC<TopBlogsCarouselProps> = ({ blogs, title = 'Top
             <Card
               key={blog.id}
               className="flex-shrink-0 w-[320px] cursor-pointer hover:shadow-lg transition-shadow overflow-hidden relative"
-              onClick={() => handleBlogClick(blog.slug)}
             >
+              <Link
+                to={`/blog/${blog.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Read ${blog.title}`}
+                className="absolute inset-0 z-10"
+              />
               {/* Background Image - always show, use thumbnail or placeholder */}
               <div 
                 className="absolute inset-0 bg-cover bg-center"
@@ -112,7 +113,7 @@ const TopBlogsCarousel: React.FC<TopBlogsCarouselProps> = ({ blogs, title = 'Top
               </div>
               
               {/* Content */}
-              <div className="relative z-10 p-4 h-[200px] flex flex-col justify-end">
+              <div className="relative z-20 p-4 h-[200px] flex flex-col justify-end pointer-events-none">
                 <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-white">{blog.title}</h3>
                 <div className="flex items-center justify-between">
                   {blog.authors && (
@@ -129,8 +130,7 @@ const TopBlogsCarousel: React.FC<TopBlogsCarouselProps> = ({ blogs, title = 'Top
                           href={blog.authors.profile_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-sm text-white/90 hover:text-white hover:underline transition-colors"
+                          className="pointer-events-auto text-sm text-white/90 hover:text-white hover:underline transition-colors"
                         >
                           {blog.authors.name}
                         </a>

@@ -1,10 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  const navigate = useNavigate();
-  
-  const handleNavigation = (path: string) => {
-    navigate(path);
+  const scrollToTopAfterNavigation = () => {
     setTimeout(() => window.scrollTo(0, 0), 0);
   };
   
@@ -17,14 +14,14 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Company</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleNavigation('/about')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/about" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   About Us
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/contact')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/contact" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Connect
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -34,19 +31,19 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleNavigation('/privacy-policy')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/privacy-policy" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Privacy Policy
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/terms')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/terms" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Terms & Conditions
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/disclaimer')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/disclaimer" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Disclaimer
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -56,14 +53,14 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleNavigation('/cookie-policy')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/cookie-policy" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Cookie Policy
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/sitemap')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/sitemap" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Sitemap
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -73,24 +70,24 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => handleNavigation('/')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Home
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/advertise')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/advertise" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Advertise
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/blogs')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/blogs" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Lighthouse
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => handleNavigation('/resources')} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/resources" onClick={scrollToTopAfterNavigation} className="text-muted-foreground hover:text-primary transition-colors">
                   Resources
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

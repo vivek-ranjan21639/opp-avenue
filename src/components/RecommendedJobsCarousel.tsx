@@ -34,10 +34,6 @@ const RecommendedJobsCarousel: React.FC<Props> = ({ jobs, title = 'Recommended J
 
   if (!jobs || jobs.length === 0) return null;
 
-  const handleClick = (job: Job) => {
-    window.open(`/job/${job.id}`, '_blank');
-  };
-
   return (
     <section className="mt-12">
       <div className="flex items-center justify-between mb-6">
@@ -71,7 +67,7 @@ const RecommendedJobsCarousel: React.FC<Props> = ({ jobs, title = 'Recommended J
         >
           {jobs.map((job) => (
             <div key={job.id} className="flex-shrink-0 w-[320px]">
-              <JobCard job={job} onClick={handleClick} />
+              <JobCard job={job} />
             </div>
           ))}
         </div>

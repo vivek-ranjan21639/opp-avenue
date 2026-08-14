@@ -3,7 +3,7 @@ import { Search, Filter, MapPin, Briefcase, GraduationCap, IndianRupee, Building
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import type { Job } from '@/components/JobCard';
 import oppAvenueLogo from '@/assets/opp-avenue-logo.png';
 import {
@@ -57,8 +57,7 @@ export interface FilterState {
   workMode: string[];
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  onAdvertiseClick, 
+const Header: React.FC<HeaderProps> = ({
   onSearchChange, 
   onFiltersChange, 
   searchQuery, 
@@ -69,7 +68,6 @@ const Header: React.FC<HeaderProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [manualToggle, setManualToggle] = useState(false);
   const [filterSearchQueries, setFilterSearchQueries] = useState<Record<string, string>>({});
-  const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const allJobs = isHomePage ? jobs : [];
@@ -354,9 +352,9 @@ const Header: React.FC<HeaderProps> = ({
     <header className="sticky-header border-none">
       {/* Mobile Top Bar: Logo left, Social icons center, Advertise right */}
       <div className="flex md:hidden items-center justify-between px-4 py-2 border-b border-border/20">
-        <button onClick={() => navigate('/')} aria-label="Go to home" className="flex-shrink-0">
+        <Link to="/" aria-label="Go to home" className="flex-shrink-0">
           <img src={oppAvenueLogo} alt="Opp Avenue Logo" className="w-14 h-14 rounded-lg object-cover" />
-        </button>
+        </Link>
         <div className="flex items-center gap-2">
           {socialLinks.map((link, index) => (
             <SocialIcon
@@ -367,22 +365,22 @@ const Header: React.FC<HeaderProps> = ({
             />
           ))}
         </div>
-        <button onClick={() => navigate('/advertise')} className="text-xs font-medium px-3 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</button>
+        <Link to="/advertise" className="text-xs font-medium px-3 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</Link>
       </div>
 
       {/* Mobile Navigation - Plain text links (without Advertise) */}
       <div className="flex md:hidden items-center justify-center gap-4 py-1.5 border-b border-border/20 px-4">
-        <button onClick={() => navigate('/')} className={`text-xs font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</button>
-        <button onClick={() => navigate('/resources')} className={`text-xs font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</button>
-        <button onClick={() => navigate('/blogs')} className={`text-xs font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</button>
-        <button onClick={() => navigate('/about')} className={`text-xs font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</button>
+        <Link to="/" className={`text-xs font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</Link>
+        <Link to="/resources" className={`text-xs font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</Link>
+        <Link to="/blogs" className={`text-xs font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</Link>
+        <Link to="/about" className={`text-xs font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</Link>
       </div>
 
       {/* Tablet: Two rows (top bar + nav row) */}
       <div className="hidden md:flex lg:hidden items-center justify-between max-w-7xl mx-auto px-8 py-3 border-b border-border/20">
-        <button onClick={() => navigate('/')} aria-label="Go to home" className="flex-shrink-0">
+        <Link to="/" aria-label="Go to home" className="flex-shrink-0">
           <img src={oppAvenueLogo} alt="Opp Avenue Logo" className="w-14 h-14 rounded-lg object-cover" />
-        </button>
+        </Link>
         <div className="flex items-center gap-2">
           {socialLinks.map((link, index) => (
             <SocialIcon
@@ -393,7 +391,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           ))}
         </div>
-        <button onClick={() => navigate('/advertise')} className="text-sm font-medium px-4 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</button>
+        <Link to="/advertise" className="text-sm font-medium px-4 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</Link>
       </div>
       <div className="hidden md:flex lg:hidden items-center justify-between max-w-7xl mx-auto px-8 py-2 border-b border-border/20">
         {isHomePage && (
@@ -411,18 +409,18 @@ const Header: React.FC<HeaderProps> = ({
         )}
         {!isHomePage && <div />}
         <div className="flex items-center gap-5">
-          <button onClick={() => navigate('/')} className={`text-sm font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</button>
-          <button onClick={() => navigate('/resources')} className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</button>
-          <button onClick={() => navigate('/blogs')} className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</button>
-          <button onClick={() => navigate('/about')} className={`text-sm font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</button>
+          <Link to="/" className={`text-sm font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</Link>
+          <Link to="/resources" className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</Link>
+          <Link to="/blogs" className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</Link>
+          <Link to="/about" className={`text-sm font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</Link>
         </div>
       </div>
 
       {/* Laptop/Desktop: Single row - Logo | Search | Nav | Social | Advertise */}
       <div className="hidden lg:flex items-center justify-between max-w-7xl mx-auto px-16 py-3 border-b border-border/20 gap-6">
-        <button onClick={() => navigate('/')} aria-label="Go to home" className="flex-shrink-0">
+        <Link to="/" aria-label="Go to home" className="flex-shrink-0">
           <img src={oppAvenueLogo} alt="Opp Avenue Logo" className="w-16 h-16 rounded-lg object-cover" />
-        </button>
+        </Link>
         {isHomePage && (
           <div className={`relative flex items-center gap-3 ${isScrolled ? 'flex-1 max-w-md' : 'flex-1 max-w-sm'}`}>
             <div className="relative flex-1">
@@ -437,10 +435,10 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
         <div className="flex items-center gap-6">
-          <button onClick={() => navigate('/')} className={`text-sm font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</button>
-          <button onClick={() => navigate('/resources')} className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</button>
-          <button onClick={() => navigate('/blogs')} className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</button>
-          <button onClick={() => navigate('/about')} className={`text-sm font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</button>
+          <Link to="/" className={`text-sm font-medium transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Home</Link>
+          <Link to="/resources" className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/resources') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Resources</Link>
+          <Link to="/blogs" className={`text-sm font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Lighthouse</Link>
+          <Link to="/about" className={`text-sm font-medium transition-colors ${location.pathname === '/about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>About</Link>
         </div>
         <div className="flex items-center gap-2">
           {socialLinks.map((link, index) => (
@@ -452,7 +450,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           ))}
         </div>
-        <button onClick={() => navigate('/advertise')} className="text-sm font-medium px-4 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</button>
+        <Link to="/advertise" className="text-sm font-medium px-4 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/30 hover:bg-accent hover:text-accent-foreground transition-all flex-shrink-0">Advertise</Link>
       </div>
 
       <div className="px-4 py-2">

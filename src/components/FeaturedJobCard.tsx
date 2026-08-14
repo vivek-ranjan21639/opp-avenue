@@ -5,10 +5,17 @@ import { Job } from '@/components/JobCard';
 
 interface Props {
   job: Job;
-  onClick: (job: Job) => void;
+  onClick?: (job: Job, event: React.MouseEvent<HTMLAnchorElement>) => void;
+  href?: string;
+  target?: React.HTMLAttributeAnchorTarget;
 }
 
-const FeaturedJobCard: React.FC<Props> = ({ job, onClick }) => {
+const FeaturedJobCard: React.FC<Props> = ({
+  job,
+  onClick,
+  href,
+  target = '_blank',
+}) => {
   const cityLabel = (() => {
     const cities = (job.locations || []).map((l: any) => l?.city).filter(Boolean);
     if (cities.length === 0) return job.location || 'NA';
@@ -25,9 +32,12 @@ const FeaturedJobCard: React.FC<Props> = ({ job, onClick }) => {
   })();
 
   return (
-    <div
-      onClick={() => onClick(job)}
-      className="cursor-pointer h-[300px] w-[300px] rounded-xl p-3.5 flex flex-col gap-2 text-white transition-all duration-300 hover:-translate-y-1"
+    <a
+      href={href || `/job/${job.id}`}
+      target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+      onClick={(event) => onClick?.(job, event)}
+      className="cursor-pointer h-[300px] w-[300px] rounded-xl p-3.5 flex flex-col gap-2 text-white no-underline transition-all duration-300 hover:-translate-y-1"
       style={{
         background: 'linear-gradient(135deg, hsl(215 90% 50%), hsl(220 85% 42%))',
         border: '1px solid hsl(220 85% 38%)',
@@ -110,7 +120,7 @@ const FeaturedJobCard: React.FC<Props> = ({ job, onClick }) => {
         <Clock className="w-3 h-3" />
         <span>{job.postedTime || 'NA'}</span>
       </div>
-    </div>
+    </a>
   );
 };
 

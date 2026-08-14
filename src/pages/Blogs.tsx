@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, type MouseEvent } from "react";
 import { Calendar, User, Clock, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -144,26 +144,45 @@ const Blogs = () => {
           <p className="text-muted-foreground">Loading blogs...</p>
         ) : blogs.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 max-w-sm sm:max-w-none mx-auto">
-            {blogs.map((blog) => (
-              <Link
-                key={blog.id}
-                to={`/blog/${blog.slug}`}
-                target="_blank"
-                className="block h-full group"
-              >
-                <Card className="h-full overflow-hidden flex flex-col cursor-pointer hover:shadow-peach-glow transition-shadow">
+            {blogs.map((blog) => {
+              const blogHref = `/blog/${blog.slug}`;
+              const handleCardClick = (event: MouseEvent<HTMLDivElement>) => {
+                if ((event.target as HTMLElement).closest('a,button')) return;
+                window.open(blogHref, '_blank', 'noopener,noreferrer');
+              };
+
+              return (
+              <div key={blog.id} className="block h-full group">
+                <Card
+                  onClick={handleCardClick}
+                  className="h-full overflow-hidden flex flex-col cursor-pointer hover:shadow-peach-glow transition-shadow"
+                >
                   {blog.thumbnail_url && (
-                    <div className="relative w-full aspect-video bg-muted overflow-hidden">
+                    <Link
+                      to={blogHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="block relative w-full aspect-video bg-muted overflow-hidden"
+                    >
                       <img
                         src={blog.thumbnail_url}
                         alt={blog.title}
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                    </div>
+                    </Link>
                   )}
                   <CardHeader className="p-3 sm:p-4 pb-2">
-                    <CardTitle className="text-base sm:text-lg line-clamp-2">{blog.title}</CardTitle>
+                    <Link
+                      to={blogHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="block text-foreground no-underline hover:text-primary transition-colors"
+                    >
+                      <CardTitle className="text-base sm:text-lg line-clamp-2">{blog.title}</CardTitle>
+                    </Link>
                     {blog.summary && (
                       <>
                         <CardDescription className={cn("mt-1 text-sm", expandedDescs[blog.id] ? "" : "line-clamp-2")}>
@@ -202,8 +221,9 @@ const Blogs = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
-            ))}
+              </div>
+              );
+            })}
           </div>
         ) : (
           <p className="text-muted-foreground text-center py-12">No blogs match your filters.</p>

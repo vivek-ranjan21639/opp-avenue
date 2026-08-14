@@ -75,7 +75,9 @@ export default function ResourceDetail() {
       <PageLayout prerenderReady>
         <main className="max-w-[1008px] mx-auto px-4 pt-8 pb-12">
           <p className="text-muted-foreground">Resource not found.</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate(-1)}>Back</Button>
+          <Button asChild variant="outline" className="mt-4">
+            <Link to={`/resources/${categorySlug || ''}`}>Back</Link>
+          </Button>
         </main>
       </PageLayout>
     );
@@ -91,9 +93,11 @@ export default function ResourceDetail() {
 
       <main className="max-w-[1008px] mx-auto px-4 pt-8 pb-12">
         <div className="flex items-center gap-3 mb-6">
-          <Link to={`/resources/${categorySlug || ''}`}>
-            <Button variant="ghost" size="icon"><ArrowLeft className="h-4 w-4" /></Button>
-          </Link>
+          <Button asChild variant="ghost" size="icon">
+            <Link to={`/resources/${categorySlug || ''}`}>
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-2xl md:text-4xl font-bold text-foreground">{resource.title}</h1>

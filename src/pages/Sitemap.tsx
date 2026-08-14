@@ -1,12 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Home, Shield, Mail } from 'lucide-react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import PageLayout from '@/components/PageLayout';
 import SEO from '@/components/SEO';
 
 const Sitemap = () => {
-  const navigate = useNavigate();
-
   const siteStructure = [
     {
       category: 'Main Pages',
@@ -66,10 +64,10 @@ const Sitemap = () => {
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     {section.pages.map((page, pageIndex) => (
-                      <div
+                      <Link
                         key={pageIndex}
-                        onClick={() => navigate(page.path)}
-                        className="p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
+                        to={page.path}
+                        className="block p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group no-underline"
                       >
                         <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
                           {page.name}
@@ -77,7 +75,7 @@ const Sitemap = () => {
                         <p className="text-sm text-muted-foreground">
                           {page.description}
                         </p>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>

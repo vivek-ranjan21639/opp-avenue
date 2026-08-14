@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { useParams, Link } from "react-router-dom";
 import { usePublishedResources, useResourceCategories, useResourceTagGroups, DEFAULT_FIELD_CONFIG, type ResourceFieldConfig } from "@/hooks/useResources";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -187,8 +187,31 @@ export default function ResourceCategoryPage() {
 
               const wrapperClass = "block h-full group";
               const isList = view !== 'grid';
+              const trackResourceOpen = () => {
+                void trackEvent('resource_view', {
+                  entity_type: 'resource',
+                  entity_id: resource.id,
+                  metadata: { title: resource.title, type: 'link', category: categorySlug },
+                });
+              };
+              const openLinkedResource = () => {
+                if (!linked || !linkUrl) return;
+                trackResourceOpen();
+                window.open(linkUrl, '_blank', 'noopener,noreferrer');
+              };
+              const handleCardClick = (event: MouseEvent<HTMLDivElement>) => {
+                if (!linked || !linkUrl) return;
+                if ((event.target as HTMLElement).closest('a,button')) return;
+                openLinkedResource();
+              };
+              const handleResourceLinkClick = (event: MouseEvent<HTMLAnchorElement>) => {
+                event.stopPropagation();
+                trackResourceOpen();
+              };
               const cardInner = (
-                <Card className={cn(
+                <Card
+                  onClick={handleCardClick}
+                  className={cn(
                   "h-full overflow-hidden transition-shadow",
                   view === 'grid' ? 'flex flex-col' : '',
                   linked && 'cursor-pointer hover:shadow-peach-glow'
@@ -220,7 +243,19 @@ export default function ResourceCategoryPage() {
                       {/* Right: title + description + meta */}
                       <div className="flex-1 min-w-0">
                         {fieldConfig.title !== false && (
-                          <h3 className="text-xl font-semibold text-foreground line-clamp-2">{resource.title}</h3>
+                          linked && linkUrl ? (
+                            <a
+                              href={linkUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={handleResourceLinkClick}
+                              className="block text-foreground no-underline hover:text-primary transition-colors"
+                            >
+                              <h3 className="text-xl font-semibold line-clamp-2">{resource.title}</h3>
+                            </a>
+                          ) : (
+                            <h3 className="text-xl font-semibold text-foreground line-clamp-2">{resource.title}</h3>
+                          )
                         )}
                         {fieldConfig.description && resource.description && (
                           <>
@@ -289,7 +324,19 @@ export default function ResourceCategoryPage() {
                       )}
                       <CardHeader className="p-3 sm:p-4 pb-2">
                         {fieldConfig.title !== false && (
-                          <CardTitle className="text-base sm:text-lg line-clamp-2">{resource.title}</CardTitle>
+                          linked && linkUrl ? (
+                            <a
+                              href={linkUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={handleResourceLinkClick}
+                              className="block text-foreground no-underline hover:text-primary transition-colors"
+                            >
+                              <CardTitle className="text-base sm:text-lg line-clamp-2">{resource.title}</CardTitle>
+                            </a>
+                          ) : (
+                            <CardTitle className="text-base sm:text-lg line-clamp-2">{resource.title}</CardTitle>
+                          )
                         )}
                         {fieldConfig.description && resource.description && (
                           <>
@@ -343,26 +390,6 @@ export default function ResourceCategoryPage() {
                 </Card>
               );
 
-              if (linked) {
-                return (
-                  <a
-                    key={resource.id}
-                    href={linkUrl!}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={wrapperClass}
-                    onClick={() => {
-                      void trackEvent('resource_view', {
-                        entity_type: 'resource',
-                        entity_id: resource.id,
-                        metadata: { title: resource.title, type: 'link', category: categorySlug },
-                      });
-                    }}
-                  >
-                    {cardInner}
-                  </a>
-                );
-              }
               return <div key={resource.id} className={wrapperClass}>{cardInner}</div>;
             })
           ) : (

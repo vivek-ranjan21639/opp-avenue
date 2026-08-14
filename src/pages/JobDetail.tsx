@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, IndianRupee, Building, Users, Calendar, ExternalLink, Send, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -18,10 +18,8 @@ import { usePrerenderReady } from '@/hooks/usePrerenderReady';
 import { trackEvent } from '@/lib/analytics';
 import { sanitizeHtml } from '@/lib/sanitizeHtml';
 
-// Open the user's default mail handler with prefilled recipient and subject.
-const openMailCompose = (to: string, subject: string) => {
-  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}`;
-};
+const getMailtoHref = (to: string, subject: string) =>
+  `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}`;
 
 // Below-the-fold — lazy load to keep initial JS small
 const FeaturedCarousel = lazy(() => import('@/components/FeaturedCarousel'));
@@ -108,9 +106,11 @@ const JobDetail = () => {
           <main className="px-4 md:px-8 py-8">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-xl md:text-2xl font-bold mb-4">Job Not Found</h1>
-              <Button onClick={() => navigate('/')} className="rounded-full">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Jobs
+              <Button asChild className="rounded-full">
+                <Link to="/">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Jobs
+                </Link>
               </Button>
             </div>
           </main>
@@ -264,24 +264,36 @@ const JobDetail = () => {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 {job.applicationLink ? (
-                  <Button 
-                    onClick={() => { void trackEvent('apply_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'url', placement: 'top' } }); window.open(job.applicationLink, '_blank'); }}
+                  <Button
+                    asChild
                     className="bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent text-accent-foreground px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium flex items-center justify-center gap-2"
                   >
-                    <Send className="w-4 h-4" />
-                    Apply Now
+                    <a
+                      href={job.applicationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => { void trackEvent('apply_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'url', placement: 'top' } }); }}
+                    >
+                      <Send className="w-4 h-4" />
+                      Apply Now
+                    </a>
                   </Button>
                 ) : job.applicationEmail ? (
                   <div className="flex flex-col gap-2">
                     <p className="text-sm text-muted-foreground">
                       To apply, send your resume to:
                     </p>
-                    <Button 
-                      onClick={() => { void trackEvent('apply_email_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'email', placement: 'top' } }); openMailCompose(job.applicationEmail!, `Application for ${job.title} Position`); }}
+                    <Button
+                      asChild
                       className="bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent text-accent-foreground px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium flex items-center justify-center gap-2"
                     >
-                      <Send className="w-4 h-4" />
-                      {job.applicationEmail}
+                      <a
+                        href={getMailtoHref(job.applicationEmail, `Application for ${job.title} Position`)}
+                        onClick={() => { void trackEvent('apply_email_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'email', placement: 'top' } }); }}
+                      >
+                        <Send className="w-4 h-4" />
+                        {job.applicationEmail}
+                      </a>
                     </Button>
                   </div>
                 ) : (
@@ -293,31 +305,41 @@ const JobDetail = () => {
                   </Button>
                 )}
                 {job.companyWebsite && (
-                  <Button 
-                    onClick={() => window.open(job.companyWebsite, '_blank')}
-                    variant="outline" 
+                  <Button
+                    asChild
+                    variant="outline"
                     className="rounded-full flex items-center justify-center gap-2"
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    Visit Website
+                    <a href={job.companyWebsite} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4" />
+                      Visit Website
+                    </a>
                   </Button>
                 )}
-                <Button 
-                  onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(`${job.company_name} company`)}`, '_blank')}
-                  variant="outline" 
+                <Button
+                  asChild
+                  variant="outline"
                   className="rounded-full flex items-center justify-center gap-2"
                 >
-                  <ExternalLink className="w-4 h-4" />
-                  Search on Google
+                  <a
+                    href={`https://www.google.com/search?q=${encodeURIComponent(`${job.company_name} company`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Search on Google
+                  </a>
                 </Button>
                 {job.jd_file_url && (
-                  <Button 
-                    onClick={() => window.open(job.jd_file_url, '_blank')}
-                    variant="outline" 
+                  <Button
+                    asChild
+                    variant="outline"
                     className="rounded-full flex items-center justify-center gap-2"
                   >
-                    <Download className="w-4 h-4" />
-                    Download JD
+                    <a href={job.jd_file_url} target="_blank" rel="noopener noreferrer">
+                      <Download className="w-4 h-4" />
+                      Download JD
+                    </a>
                   </Button>
                 )}
               </div>
@@ -398,24 +420,36 @@ const JobDetail = () => {
             {/* Apply Button */}
             <div className="flex justify-center mb-6">
               {job.applicationLink ? (
-                <Button 
-                  onClick={() => { void trackEvent('apply_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'url', placement: 'bottom' } }); window.open(job.applicationLink, '_blank'); }}
+                <Button
+                  asChild
                   className="bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent text-accent-foreground px-8 py-3 rounded-full font-medium flex items-center justify-center gap-2"
                 >
-                  <Send className="w-4 h-4" />
-                  Apply Now
+                  <a
+                    href={job.applicationLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => { void trackEvent('apply_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'url', placement: 'bottom' } }); }}
+                  >
+                    <Send className="w-4 h-4" />
+                    Apply Now
+                  </a>
                 </Button>
               ) : job.applicationEmail ? (
                 <div className="flex flex-col items-center gap-2">
                   <p className="text-sm text-muted-foreground">
                     To apply, send your resume to:
                   </p>
-                  <Button 
-                    onClick={() => { void trackEvent('apply_email_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'email', placement: 'bottom' } }); openMailCompose(job.applicationEmail!, `Application for ${job.title} Position`); }}
+                  <Button
+                    asChild
                     className="bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent text-accent-foreground px-8 py-3 rounded-full font-medium flex items-center justify-center gap-2"
                   >
-                    <Send className="w-4 h-4" />
-                    {job.applicationEmail}
+                    <a
+                      href={getMailtoHref(job.applicationEmail, `Application for ${job.title} Position`)}
+                      onClick={() => { void trackEvent('apply_email_click', { entity_type: 'job', entity_id: job.id, metadata: { method: 'email', placement: 'bottom' } }); }}
+                    >
+                      <Send className="w-4 h-4" />
+                      {job.applicationEmail}
+                    </a>
                   </Button>
                 </div>
               ) : (

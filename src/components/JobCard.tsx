@@ -28,10 +28,17 @@ export interface Job {
 
 interface JobCardProps {
   job: Job;
-  onClick: (job: Job) => void;
+  onClick?: (job: Job, event: React.MouseEvent<HTMLAnchorElement>) => void;
+  href?: string;
+  target?: React.HTMLAttributeAnchorTarget;
 }
 
-const JobCard: React.FC<JobCardProps> = ({ job, onClick }) => {
+const JobCard: React.FC<JobCardProps> = ({
+  job,
+  onClick,
+  href,
+  target = '_blank',
+}) => {
   const cityLabel = (() => {
     const cities = (job.locations || []).map((l: any) => l?.city).filter(Boolean);
     if (cities.length === 0) return job.location || 'NA';
@@ -40,7 +47,13 @@ const JobCard: React.FC<JobCardProps> = ({ job, onClick }) => {
   })();
 
   return (
-    <div className="job-card cursor-pointer" onClick={() => onClick(job)}>
+    <a
+      href={href || `/job/${job.id}`}
+      target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+      className="job-card block cursor-pointer no-underline text-inherit"
+      onClick={(event) => onClick?.(job, event)}
+    >
       {/* Header: logo + company + role */}
       <div className="flex items-center gap-3">
         {job.companyLogo ? (
@@ -83,7 +96,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, onClick }) => {
           <span className="truncate">{cityLabel}</span>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

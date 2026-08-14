@@ -175,22 +175,18 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ title, items = [], 
     });
   };
 
-  const handleItemClick = (item: FeaturedItem) => {
-    logFeaturedClick(item);
-    if (item.content_type === 'poster_clickable' && item.link_url) {
-      window.open(item.link_url, '_blank');
-    } else if (item.content_type === 'poster_job_link' && item.job_id) {
-      window.open(`/job/${item.job_id}`, '_blank');
-    } else if (item.content_type === 'job_card' && item.job_id) {
-      window.open(`/job/${item.job_id}`, '_blank');
+  const getFeaturedHref = (item: FeaturedItem) => {
+    if (item.content_type === 'poster_clickable' && item.link_url) return item.link_url;
+    if ((item.content_type === 'poster_job_link' || item.content_type === 'job_card') && item.job_id) {
+      return `/job/${item.job_id}`;
     }
+    return null;
   };
 
-  const handleJobClick = (job: Job) => {
+  const handleJobAnchorClick = (job: Job, event: React.MouseEvent<HTMLAnchorElement>) => {
     if (onJobClick) {
+      event.preventDefault();
       onJobClick(job);
-    } else {
-      window.open(`/job/${job.id}`, '_blank');
     }
   };
 
@@ -250,14 +246,15 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ title, items = [], 
                     border: '1px solid hsl(30 40% 75% / 0.5)'
                   }}
                 >
-                  <JobCard job={job} onClick={() => handleJobClick(job)} />
+                  <JobCard job={job} onClick={handleJobAnchorClick} />
                 </div>
               </div>
             ))
           ) : (
             duplicatedFeatured.map((item, idx) => {
               const isJobCard = item.content_type === 'job_card';
-              const isClickable = item.content_type !== 'poster_static';
+              const href = getFeaturedHref(item);
+              const isClickable = !!href;
 
               // For real job cards from j_jobs, render the standard JobCard so all info matches the normal listing
               if (isJobCard && item.job) {
@@ -265,34 +262,48 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ title, items = [], 
                   <div key={`${item.id}-${idx}`} className="flex-shrink-0">
                     <FeaturedJobCard
                       job={item.job}
-                      onClick={() => { logFeaturedClick(item); handleJobClick(item.job!); }}
+                      href={href || undefined}
+                      onClick={(job, event) => { logFeaturedClick(item); handleJobAnchorClick(job, event); }}
                     />
                   </div>
                 );
               }
+
+              const posterContent = (
+                <div
+                  className={`relative h-[300px] rounded-lg overflow-hidden border border-border ${
+                    isClickable ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''
+                  }`}
+                >
+                  <img
+                    src={item.image_url || '/placeholder.svg'}
+                    alt={item.title || 'Featured content'}
+                    className="w-full h-full object-cover"
+                  />
+                  {item.title && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                      <h3 className="text-white font-semibold">{item.title}</h3>
+                    </div>
+                  )}
+                </div>
+              );
 
               return (
                 <div
                   key={`${item.id}-${idx}`}
                   className="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[400px]"
                 >
-                  <div
-                    className={`relative h-[300px] rounded-lg overflow-hidden border border-border ${
-                      isClickable ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''
-                    }`}
-                    onClick={() => handleItemClick(item)}
-                  >
-                    <img
-                      src={item.image_url || '/placeholder.svg'}
-                      alt={item.title || 'Featured content'}
-                      className="w-full h-full object-cover"
-                    />
-                    {item.title && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                        <h3 className="text-white font-semibold">{item.title}</h3>
-                      </div>
-                    )}
-                  </div>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block no-underline"
+                      onClick={() => logFeaturedClick(item)}
+                    >
+                      {posterContent}
+                    </a>
+                  ) : posterContent}
                 </div>
               );
             })
