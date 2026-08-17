@@ -17,4 +17,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://oppavenue.com/sitemap.xml
+Sitemap: https://opp-avenue.vercel.app/sitemap.xml

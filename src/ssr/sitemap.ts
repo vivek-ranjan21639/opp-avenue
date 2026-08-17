@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-const DEFAULT_SITE_URL = "https://oppavenue.com";
+const DEFAULT_SITE_URL = "https://opp-avenue.vercel.app";
 const SUPABASE_URL = "https://egyeyrjxlvblveijmkky.supabase.co";
 const SUPABASE_ANON =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVneWV5cmp4bHZibHZlaWpta2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTMwOTksImV4cCI6MjA5MDYyOTA5OX0.pwEAcHZ_N42PA47Rlp3J7_5mkOQ0TcQahR5xGwS736Q";
@@ -47,7 +47,7 @@ const staticEntries: SitemapEntry[] = [
 ];
 
 export function getSiteUrl(origin?: string): string {
-  const raw = process.env.SITE_URL || process.env.VITE_SITE_URL || DEFAULT_SITE_URL;
+  const raw = process.env.SITE_URL || process.env.VITE_SITE_URL || origin || DEFAULT_SITE_URL;
   return raw.replace(/\/+$/, "");
 }
 

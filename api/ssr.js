@@ -1,25 +1,18 @@
 import { readFile } from "node:fs/promises";
-import { extname, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { extname } from "node:path";
+import { fileURLToPath } from "node:url";
+import * as renderer from "../dist/server/entry-server.js";
 import { composeSsrHtml } from "../ssr-template.js";
 
-const projectRoot = process.cwd();
-const templatePath = resolve(projectRoot, "dist/client/index.html");
-const serverEntry = pathToFileURL(
-  resolve(projectRoot, "dist/server/entry-server.js")
-).href;
+const templatePath = fileURLToPath(
+  new URL("../dist/server/ssr-template.html", import.meta.url)
+);
 
 let templatePromise;
-let rendererPromise;
 
 function getTemplate() {
   templatePromise ||= readFile(templatePath, "utf8");
   return templatePromise;
-}
-
-function getRenderer() {
-  rendererPromise ||= import(serverEntry);
-  return rendererPromise;
 }
 
 function getRequestUrl(request) {
@@ -59,7 +52,6 @@ async function handleRequest(request) {
 
   const url = getRequestUrl(request);
   const pathname = url.pathname;
-  const renderer = await getRenderer();
   const origin = getOrigin(request, url);
 
   if (pathname === "/sitemap.xml") {

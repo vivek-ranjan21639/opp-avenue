@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-const SITE_URL = 'https://oppavenue.com';
+import { SITE_URL } from '@/lib/siteUrl';
 
 interface BreadcrumbItem {
   name: string;
