@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { composeSsrHtml } from "./ssr-template.js";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const clientRoot = resolve(__dirname, "dist/client");
@@ -112,10 +113,7 @@ async function handleRequest(req, res) {
 
     const template = await getTemplate();
     const rendered = await renderer.render(`${pathname}${url.search}`);
-    const html = template
-      .replace("<!--app-head-->", rendered.head)
-      .replace("<!--app-html-->", rendered.html)
-      .replace("<!--app-state-->", rendered.stateScript);
+    const html = composeSsrHtml(template, rendered);
 
     res.writeHead(200, {
       "Content-Type": "text/html; charset=utf-8",

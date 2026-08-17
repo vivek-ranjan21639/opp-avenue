@@ -30,7 +30,9 @@ const SEO = ({
   children,
 }: SEOProps) => {
   const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
-  const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : undefined;
+  const canonicalUrl = canonical
+    ? new URL(canonical, `${SITE_URL}/`).toString()
+    : undefined;
 
   return (
     <Helmet>

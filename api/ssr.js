@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { composeSsrHtml } from "../ssr-template.js";
 
 const projectRoot = process.cwd();
 const templatePath = resolve(projectRoot, "dist/client/index.html");
@@ -91,10 +92,7 @@ async function handleRequest(request) {
 
   const template = await getTemplate();
   const rendered = await renderer.render(`${pathname}${url.search}`);
-  const html = template
-    .replace("<!--app-head-->", rendered.head)
-    .replace("<!--app-html-->", rendered.html)
-    .replace("<!--app-state-->", rendered.stateScript);
+  const html = composeSsrHtml(template, rendered);
 
   return respond(request, html, {
     status: 200,
