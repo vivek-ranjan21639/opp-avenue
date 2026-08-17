@@ -1,18 +1,24 @@
 import { readFile } from "node:fs/promises";
 import { extname } from "node:path";
 import { fileURLToPath } from "node:url";
-import * as renderer from "../dist/server/entry-server.js";
 import { composeSsrHtml } from "../ssr-template.js";
 
 const templatePath = fileURLToPath(
   new URL("../dist/server/ssr-template.html", import.meta.url)
 );
+const serverEntryUrl = new URL("../dist/server/entry-server.js", import.meta.url);
 
 let templatePromise;
+let rendererPromise;
 
 function getTemplate() {
   templatePromise ||= readFile(templatePath, "utf8");
   return templatePromise;
+}
+
+function getRenderer() {
+  rendererPromise ||= import(serverEntryUrl.href);
+  return rendererPromise;
 }
 
 function getRequestUrl(request) {
@@ -53,6 +59,7 @@ async function handleRequest(request) {
   const url = getRequestUrl(request);
   const pathname = url.pathname;
   const origin = getOrigin(request, url);
+  const renderer = await getRenderer();
 
   if (pathname === "/sitemap.xml") {
     const xml = await renderer.buildSitemapXml(origin);
@@ -103,7 +110,8 @@ export default {
       return await handleRequest(request);
     } catch (error) {
       console.error("SSR request failed", error);
-      return new Response("Internal Server Error", {
+      const message = error instanceof Error ? error.message : String(error);
+      return new Response(`SSR Internal Server Error\n${message}`, {
         status: 500,
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });

@@ -11,6 +11,10 @@
   },
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/api/ssr?__ssr_path=/"
+    },
+    {
       "source": "/:path*",
       "destination": "/api/ssr?__ssr_path=:path*"
     }
