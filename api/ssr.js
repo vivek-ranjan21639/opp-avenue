@@ -110,9 +110,7 @@ export default {
       return await handleRequest(request);
     } catch (error) {
       console.error("SSR request failed", error);
-      const debug = new URL(request.url).searchParams.get("__ssr_debug") === "1";
-      const message = error instanceof Error ? error.message : String(error);
-      return new Response(debug ? `SSR Internal Server Error\n${message}` : "Internal Server Error", {
+      return new Response("Internal Server Error", {
         status: 500,
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
